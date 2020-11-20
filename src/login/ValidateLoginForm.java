@@ -6,6 +6,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.Color;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.Test;
@@ -75,7 +77,7 @@ public class ValidateLoginForm {
   }
   
   @Test
-  public void validateLoginPageButtons() {
+  public void validateLoginPageButtons() throws InterruptedException {
 	  WebElement loginButton, newUserButton;
 	  SoftAssert sAssert = new SoftAssert();
 	  loginButton = driver.findElement(By.id("login"));
@@ -88,9 +90,25 @@ public class ValidateLoginForm {
 	  sAssert.assertTrue(newUserButton.isDisplayed(), "New user button should be displayed");
 	  sAssert.assertTrue(newUserButton.isEnabled(), "New user button should be enabled");
 	  sAssert.assertFalse(newUserButton.isSelected(), "New user button should not be selected");
-	  	  
+	  
+	  Color loginOriginal, loginFinal, newUserOriginal, newUserFinal;
+	  
+	  loginOriginal = Color.fromString(loginButton.getCssValue("background-color"));
+      Actions actions = new Actions(driver);
+	  actions.moveToElement(loginButton).perform();
+	  Thread.sleep(2000);
+      loginFinal = Color.fromString(loginButton.getCssValue("background-color"));
+	  sAssert.assertNotEquals(loginOriginal, loginFinal, "Background color should change on cursor hover");
+	  
+	  newUserOriginal = Color.fromString(newUserButton.getCssValue("background-color"));
+	  actions.moveToElement(newUserButton).perform();
+	  Thread.sleep(2000);
+      newUserFinal = Color.fromString(newUserButton.getCssValue("background-color"));
+	  sAssert.assertNotEquals(newUserOriginal, newUserFinal, "Background color should change on cursor hover");
+		  
 	  sAssert.assertAll();
   }
+  
   
   @AfterTest
   public void afterTest() {	  
