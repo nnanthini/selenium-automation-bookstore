@@ -51,7 +51,7 @@ public class ValidateLoginForm {
   }
   
   @Test
-  public void validateUserNameAndPasswordFields() {
+  public void validateUserNameAndPasswordFields() throws InterruptedException {
 	  WebElement userInput, passwordInput;
 	  SoftAssert sAssert = new SoftAssert();
 	  expected = "UserName :";
@@ -72,6 +72,21 @@ public class ValidateLoginForm {
 	  expected = "Password";
 	  actual = passwordInput.getAttribute("placeholder");
 	  sAssert.assertEquals(actual, expected, "Password placeholder mismatch");
+	  
+	  Color userOriginal, userFinal, passwordOriginal, passwordFinal;
+	  userOriginal = Color.fromString(userInput.getCssValue("border-top-color"));	  
+	  userInput.click();
+	  Thread.sleep(2000);
+	  userFinal = Color.fromString(userInput.getCssValue("border-top-color"));	  
+	  sAssert.assertNotEquals(userOriginal, userFinal, "Border color should change on click");
+	  
+	  
+	  passwordOriginal = Color.fromString(passwordInput.getCssValue("border-top-color"));	  
+	  passwordInput.click();
+	  Thread.sleep(2000);
+	  passwordFinal = Color.fromString(passwordInput.getCssValue("border-top-color"));	  
+	  sAssert.assertNotEquals(passwordOriginal, passwordFinal, "Border color should change on click");
+	  
 	  sAssert.assertAll();
 	  
   }
