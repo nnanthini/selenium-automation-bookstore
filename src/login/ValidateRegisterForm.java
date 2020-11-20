@@ -58,14 +58,76 @@ public class ValidateRegisterForm {
 	  expected = "First Name :";
 	  actual = driver.findElement(By.id("firstname-label")).getText();
 	  sAssert.assertEquals(actual, expected, "First name label mismatch");
-	  
-	  
+   
 	  firstNameInput = driver.findElement(By.id("firstname"));
 	  expected = "First Name";
 	  actual = firstNameInput.getAttribute("placeholder");
 	  sAssert.assertEquals(actual, expected, "First name placeholder mismatch");
+	 
+	  Color firstNameOriginal, firstNameFinal;
+	  firstNameOriginal = Color.fromString(firstNameInput.getCssValue("border-top-color"));	  
+	  firstNameInput.click();
+	  Thread.sleep(2000);
+	  firstNameFinal = Color.fromString(firstNameInput.getCssValue("border-top-color"));	  
+	  sAssert.assertNotEquals(firstNameOriginal, firstNameFinal, "Border color should change on click");
 	  
-	  /*
+	  sAssert.assertAll();
+	  
+  }
+  
+  @Test
+  public void validateLastNameFields() throws InterruptedException {
+	  WebElement lastNameInput;
+	  SoftAssert sAssert = new SoftAssert();
+	  expected = "Last Name :";
+	  actual = driver.findElement(By.id("lastname-label")).getText();
+	  sAssert.assertEquals(actual, expected, "Last name label mismatch");
+   
+	  lastNameInput = driver.findElement(By.id("lastname"));
+	  expected = "Last Name";
+	  actual = lastNameInput.getAttribute("placeholder");
+	  sAssert.assertEquals(actual, expected, "Last name placeholder mismatch");
+	 
+	  Color lastNameOriginal, lastNameFinal;
+	  lastNameOriginal = Color.fromString(lastNameInput.getCssValue("border-top-color"));	  
+	  lastNameInput.click();
+	  Thread.sleep(2000);
+	  lastNameFinal = Color.fromString(lastNameInput.getCssValue("border-top-color"));	  
+	  sAssert.assertNotEquals(lastNameOriginal, lastNameFinal, "Border color should change on click");
+	  
+	  sAssert.assertAll();
+	  
+  }
+  
+  @Test
+  public void validateUserNameFields() throws InterruptedException {
+	  WebElement userNameInput;
+	  SoftAssert sAssert = new SoftAssert();
+	  expected = "UserName :";
+	  actual = driver.findElement(By.id("userName-label")).getText();
+	  sAssert.assertEquals(actual, expected, "User name label mismatch");
+   
+	  userNameInput = driver.findElement(By.id("userName"));
+	  expected = "UserName";
+	  actual = userNameInput.getAttribute("placeholder");
+	  sAssert.assertEquals(actual, expected, "User name placeholder mismatch");
+	 
+	  Color userNameOriginal, userNameFinal;
+	  userNameOriginal = Color.fromString(userNameInput.getCssValue("border-top-color"));	  
+	  userNameInput.click();
+	  Thread.sleep(2000);
+	  userNameFinal = Color.fromString(userNameInput.getCssValue("border-top-color"));	  
+	  sAssert.assertNotEquals(userNameOriginal, userNameFinal, "Border color should change on click");
+	  
+	  sAssert.assertAll();
+	  
+  }
+  
+  @Test
+  public void validatePasswordFields() throws InterruptedException {
+	  WebElement passwordInput;
+	  SoftAssert sAssert = new SoftAssert();
+	  	  
 	  expected = "Password :";
 	  actual = driver.findElement(By.id("password-label")).getText();
 	  sAssert.assertEquals(actual, expected, "Password label mismatch");
@@ -74,21 +136,15 @@ public class ValidateRegisterForm {
 	  expected = "Password";
 	  actual = passwordInput.getAttribute("placeholder");
 	  sAssert.assertEquals(actual, expected, "Password placeholder mismatch");
-	  */
-	  Color firstNameOriginal, firstNameFinal;
-	  firstNameOriginal = Color.fromString(firstNameInput.getCssValue("border-top-color"));	  
-	  firstNameInput.click();
-	  Thread.sleep(2000);
-	  firstNameFinal = Color.fromString(firstNameInput.getCssValue("border-top-color"));	  
-	  sAssert.assertNotEquals(firstNameOriginal, firstNameFinal, "Border color should change on click");
 	  
-	  /*
+	  Color passwordOriginal, passwordFinal;	  
+	  
 	  passwordOriginal = Color.fromString(passwordInput.getCssValue("border-top-color"));	  
 	  passwordInput.click();
 	  Thread.sleep(2000);
 	  passwordFinal = Color.fromString(passwordInput.getCssValue("border-top-color"));	  
 	  sAssert.assertNotEquals(passwordOriginal, passwordFinal, "Border color should change on click");
-	  */
+	 
 	  sAssert.assertAll();
 	  
   }
