@@ -4,6 +4,7 @@
 <classes>
 <class name="login.ValidateLoginForm"/>
 <class name="login.ValidateRegisterForm"/>
+<class name="login.LoginUser"/>
 
 </classes>
 </test>
