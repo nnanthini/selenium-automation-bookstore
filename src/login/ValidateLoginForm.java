@@ -1,6 +1,7 @@
 package login;
 
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -10,6 +11,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.Color;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
@@ -121,6 +123,31 @@ public class ValidateLoginForm {
       newUserFinal = Color.fromString(newUserButton.getCssValue("background-color"));
 	  sAssert.assertNotEquals(newUserOriginal, newUserFinal, "Background color should change on cursor hover");
 		  
+	  sAssert.assertAll();
+  }
+  
+  @DataProvider (name = "name-provider")
+  public Object[][] nameProvider() {
+	  return new Object[][] {{"abcxyz"},{"123"},{""},{null},{"A123abc"},{"aAz$"},{" iop8"},{"#123abc"},{"AAaa12$#"}};
+  }
+  
+  @Test (dataProvider = "name-provider")
+  public void testUserNameCombos(String name) {
+	  SoftAssert sAssert = new SoftAssert();
+	  if(name != null) {
+		  sAssert.assertFalse(name.isEmpty(), "Name "+name+" cant be empty");		  
+		  sAssert.assertTrue(Pattern.matches("^[A-Za-z].*",name), "Name "+name+" should start with alphabets");
+	  }
+	  sAssert.assertAll();
+  }
+  
+  @Test (dataProvider = "name-provider")
+  public void testUserPasswordCombos(String name) {
+	  SoftAssert sAssert = new SoftAssert();
+	  if(name != null) {
+		  sAssert.assertFalse(name.isEmpty(), "Name "+name+" cant be empty");		  
+		  sAssert.assertTrue(Pattern.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})$",name), "Name "+name+" should start with alphabets");
+	  }
 	  sAssert.assertAll();
   }
   

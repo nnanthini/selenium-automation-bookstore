@@ -2,10 +2,19 @@
 <suite name="Live Project">
 <test name="Book Store">
 <classes>
-<class name="login.CreateNewUser"/>
-
-
+<class name="login.ValidateLoginForm"/>
+<class name="login.ValidateRegisterForm"/>
 
 </classes>
 </test>
+<!--test name="Validate">
+<classes>
+
+</classes>
+</test>
+<test name="Other">
+<classes>
+
+</classes>
+</test-->
 </suite>
