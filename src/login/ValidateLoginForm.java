@@ -141,16 +141,6 @@ public class ValidateLoginForm {
 	  sAssert.assertAll();
   }
   
-  @Test (dataProvider = "name-provider")
-  public void testUserPasswordCombos(String name) {
-	  SoftAssert sAssert = new SoftAssert();
-	  if(name != null) {
-		  sAssert.assertFalse(name.isEmpty(), "Name "+name+" cant be empty");		  
-		  sAssert.assertTrue(Pattern.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})$",name), "Name "+name+" should start with alphabets");
-	  }
-	  sAssert.assertAll();
-  }
-  
   
   @AfterTest
   public void afterTest() {	  
