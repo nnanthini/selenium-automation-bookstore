@@ -1,6 +1,7 @@
 package login;
 
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -179,6 +180,16 @@ public class ValidateRegisterForm {
       registerFinal = Color.fromString(registerButton.getCssValue("background-color"));
 	  sAssert.assertNotEquals(registerOriginal, registerFinal, "Background color should change on cursor hover");
 		  
+	  sAssert.assertAll();
+  }
+  
+  @Test (dataProvider = "name-provider", dataProviderClass = util.DataProviderClass.class)
+  public void testUserNameCombos(String name) {
+	  SoftAssert sAssert = new SoftAssert();
+	  if(name != null) {
+		  sAssert.assertFalse(name.isEmpty(), "Name "+name+" cant be empty");		  
+		  sAssert.assertTrue(Pattern.matches("^[A-Za-z].*",name), "Name "+name+" should start with alphabets");
+	  }
 	  sAssert.assertAll();
   }
   
