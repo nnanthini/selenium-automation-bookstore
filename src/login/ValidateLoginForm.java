@@ -22,7 +22,7 @@ public class ValidateLoginForm {
 	String actual, expected;
 	
 	
-  @Test 
+  @Test
   public void initialisePage() {
 	  System.setProperty("webdriver.gecko.driver", Util.FIREFOX_PATH);
 	  

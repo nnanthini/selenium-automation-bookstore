@@ -21,7 +21,7 @@ public class ValidateRegisterForm {
 	String actual, expected;
 	
 	
-  @Test 
+  @Test
   public void initialisePage() {
 	  System.setProperty("webdriver.gecko.driver", Util.FIREFOX_PATH);
 	  

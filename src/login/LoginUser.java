@@ -31,7 +31,7 @@ public class LoginUser {
 	  Assert.assertEquals(actual, expected, "Title mismatch"); 
   }
   
-  @Test (dependsOnMethods = "initialisePage")
+  @Test (dependsOnMethods = {"initialisePage"})
   public void clickLogin() {
 	  
 	  driver.findElement(By.id("userName")).sendKeys(Util.USER_NAME);
