@@ -4,14 +4,18 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.Color;
 import org.testng.Assert;
+import org.testng.Reporter;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
@@ -23,11 +27,18 @@ public class ValidateLoginForm {
 	
 	
   @Test
-  public void initialisePage() {
-	  System.setProperty("webdriver.gecko.driver", Util.FIREFOX_PATH);
+  @Parameters ({"browser"})
+  public void initialisePage(String browser) {
+	  if(browser.equals("firefox")) {
+		  System.setProperty("webdriver.gecko.driver", Util.FIREFOX_PATH);
+		  driver = new FirefoxDriver();
+	  } else {
+		  System.setProperty("webdriver.chrome.driver", Util.CHROME_PATH);
+		  driver = new ChromeDriver();
+	  }	  
 	  
 	  String url = Util.URL;
-	  driver = new FirefoxDriver();
+	  
 	  driver.get(url);
 	  driver.manage().timeouts().implicitlyWait(Util.WAIT_TIME, TimeUnit.SECONDS);
 	  expected = "ToolsQA";
@@ -38,6 +49,7 @@ public class ValidateLoginForm {
   
   @Test
   public void validateHeader() {
+	  Reporter.log("Validate main heading of page", 1);
 	  expected = "Login";
 	  actual = driver.findElement(By.className("main-header")).getText();
 	  Assert.assertEquals(actual, expected, "Page heading mismatch");
@@ -46,6 +58,7 @@ public class ValidateLoginForm {
   
   @Test
   public void validateHeading() {
+	  Reporter.log("Validate login heading string", 1, true);
 	  expected = "Welcome,Login in Book Store";
 	  actual = driver.findElement(By.tagName("h2")).getText() + driver.findElement(By.tagName("h5")).getText();
 	  Assert.assertEquals(actual, expected, "Login heading mismatch");
@@ -78,14 +91,14 @@ public class ValidateLoginForm {
 	  Color userOriginal, userFinal, passwordOriginal, passwordFinal;
 	  userOriginal = Color.fromString(userInput.getCssValue("border-top-color"));	  
 	  userInput.click();
-	  Thread.sleep(2000);
+	  Thread.sleep(1000);
 	  userFinal = Color.fromString(userInput.getCssValue("border-top-color"));	  
 	  sAssert.assertNotEquals(userOriginal, userFinal, "Border color should change on click");
 	  
 	  
 	  passwordOriginal = Color.fromString(passwordInput.getCssValue("border-top-color"));	  
 	  passwordInput.click();
-	  Thread.sleep(2000);
+	  Thread.sleep(1000);
 	  passwordFinal = Color.fromString(passwordInput.getCssValue("border-top-color"));	  
 	  sAssert.assertNotEquals(passwordOriginal, passwordFinal, "Border color should change on click");
 	  
@@ -97,6 +110,7 @@ public class ValidateLoginForm {
   public void validateLoginPageButtons() throws InterruptedException {
 	  WebElement loginButton, newUserButton;
 	  SoftAssert sAssert = new SoftAssert();
+	  JavascriptExecutor js = (JavascriptExecutor) driver;
 	  loginButton = driver.findElement(By.id("login"));
 	  newUserButton = driver.findElement(By.id("newUser"));
 	  
@@ -112,14 +126,16 @@ public class ValidateLoginForm {
 	  
 	  loginOriginal = Color.fromString(loginButton.getCssValue("background-color"));
       Actions actions = new Actions(driver);
+      js.executeScript("arguments[0].scrollIntoView()", loginButton);
 	  actions.moveToElement(loginButton).perform();
-	  Thread.sleep(2000);
+	  Thread.sleep(1000);
       loginFinal = Color.fromString(loginButton.getCssValue("background-color"));
 	  sAssert.assertNotEquals(loginOriginal, loginFinal, "Background color should change on cursor hover");
 	  
 	  newUserOriginal = Color.fromString(newUserButton.getCssValue("background-color"));
 	  actions.moveToElement(newUserButton).perform();
-	  Thread.sleep(2000);
+      js.executeScript("arguments[0].scrollIntoView()", newUserButton);
+	  Thread.sleep(1000);
       newUserFinal = Color.fromString(newUserButton.getCssValue("background-color"));
 	  sAssert.assertNotEquals(newUserOriginal, newUserFinal, "Background color should change on cursor hover");
 		  

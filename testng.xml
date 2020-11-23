@@ -6,6 +6,7 @@
 <class name="login.ValidateLoginForm"/>
 <class name="login.ValidateRegisterForm"/>
 <class name="login.LoginUser"/>
+<class name="profile.TestUserProfile"/>
 </classes>
 </test>
 <test name="Book Store - Chrome">
@@ -14,11 +15,14 @@
 <class name="login.ValidateLoginForm"/>
 <class name="login.ValidateRegisterForm"/>
 <class name="login.LoginUser"/>
+<class name="profile.TestUserProfile"/>
 </classes>
 </test>
 <!--test name="Other">
 <classes>
-
+<class name="login.ValidateLoginForm"/>
+<class name="login.ValidateRegisterForm"/>
+<class name="login.LoginUser"/>
 </classes>
 </test-->
 </suite>

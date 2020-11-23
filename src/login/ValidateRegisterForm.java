@@ -4,13 +4,16 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.Color;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
@@ -22,11 +25,18 @@ public class ValidateRegisterForm {
 	
 	
   @Test
-  public void initialisePage() {
-	  System.setProperty("webdriver.gecko.driver", Util.FIREFOX_PATH);
+  @Parameters ({"browser"})
+  public void initialisePage(String browser) {
+	  if(browser.equals("firefox")) {
+		  System.setProperty("webdriver.gecko.driver", Util.FIREFOX_PATH);
+		  driver = new FirefoxDriver();
+	  } else {
+		  System.setProperty("webdriver.chrome.driver", Util.CHROME_PATH);
+		  driver = new ChromeDriver();
+	  }	  
 	  
 	  String url = Util.URL;
-	  driver = new FirefoxDriver();
+	  
 	  driver.get(url);
 	  driver.manage().timeouts().implicitlyWait(Util.WAIT_TIME, TimeUnit.SECONDS);
 	  expected = "ToolsQA";
@@ -68,7 +78,7 @@ public class ValidateRegisterForm {
 	  Color firstNameOriginal, firstNameFinal;
 	  firstNameOriginal = Color.fromString(firstNameInput.getCssValue("border-top-color"));	  
 	  firstNameInput.click();
-	  Thread.sleep(2000);
+	  Thread.sleep(1000);
 	  firstNameFinal = Color.fromString(firstNameInput.getCssValue("border-top-color"));	  
 	  sAssert.assertNotEquals(firstNameOriginal, firstNameFinal, "Border color should change on click");
 	  
@@ -92,7 +102,7 @@ public class ValidateRegisterForm {
 	  Color lastNameOriginal, lastNameFinal;
 	  lastNameOriginal = Color.fromString(lastNameInput.getCssValue("border-top-color"));	  
 	  lastNameInput.click();
-	  Thread.sleep(2000);
+	  Thread.sleep(1000);
 	  lastNameFinal = Color.fromString(lastNameInput.getCssValue("border-top-color"));	  
 	  sAssert.assertNotEquals(lastNameOriginal, lastNameFinal, "Border color should change on click");
 	  
@@ -116,7 +126,7 @@ public class ValidateRegisterForm {
 	  Color userNameOriginal, userNameFinal;
 	  userNameOriginal = Color.fromString(userNameInput.getCssValue("border-top-color"));	  
 	  userNameInput.click();
-	  Thread.sleep(2000);
+	  Thread.sleep(1000);
 	  userNameFinal = Color.fromString(userNameInput.getCssValue("border-top-color"));	  
 	  sAssert.assertNotEquals(userNameOriginal, userNameFinal, "Border color should change on click");
 	  
@@ -142,7 +152,7 @@ public class ValidateRegisterForm {
 	  
 	  passwordOriginal = Color.fromString(passwordInput.getCssValue("border-top-color"));	  
 	  passwordInput.click();
-	  Thread.sleep(2000);
+	  Thread.sleep(1000);
 	  passwordFinal = Color.fromString(passwordInput.getCssValue("border-top-color"));	  
 	  sAssert.assertNotEquals(passwordOriginal, passwordFinal, "Border color should change on click");
 	 
@@ -154,6 +164,7 @@ public class ValidateRegisterForm {
   public void validateLoginPageButtons() throws InterruptedException {
 	  WebElement goToLoginButton, registerButton;
 	  SoftAssert sAssert = new SoftAssert();
+	  JavascriptExecutor js = (JavascriptExecutor) driver;
 	  goToLoginButton = driver.findElement(By.id("gotologin"));
 	  registerButton = driver.findElement(By.id("register"));
 	  
@@ -169,14 +180,16 @@ public class ValidateRegisterForm {
 	  
 	  loginOriginal = Color.fromString(goToLoginButton.getCssValue("background-color"));
       Actions actions = new Actions(driver);
+      js.executeScript("arguments[0].scrollIntoView()", goToLoginButton);
 	  actions.moveToElement(goToLoginButton).perform();
-	  Thread.sleep(2000);
+	  Thread.sleep(1000);
       loginFinal = Color.fromString(goToLoginButton.getCssValue("background-color"));
 	  sAssert.assertNotEquals(loginOriginal, loginFinal, "Background color should change on cursor hover");
 	  
 	  registerOriginal = Color.fromString(registerButton.getCssValue("background-color"));
 	  actions.moveToElement(registerButton).perform();
-	  Thread.sleep(2000);
+      js.executeScript("arguments[0].scrollIntoView()", registerButton);
+	  Thread.sleep(1000);
       registerFinal = Color.fromString(registerButton.getCssValue("background-color"));
 	  sAssert.assertNotEquals(registerOriginal, registerFinal, "Background color should change on cursor hover");
 		  
