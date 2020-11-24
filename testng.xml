@@ -7,6 +7,7 @@
 <class name="login.ValidateRegisterForm"/>
 <class name="login.LoginUser"/>
 <class name="profile.TestUserProfile"/>
+<class name="bookstore.TestBookStore"/>
 </classes>
 </test>
 <test name="Book Store - Chrome">
@@ -16,6 +17,7 @@
 <class name="login.ValidateRegisterForm"/>
 <class name="login.LoginUser"/>
 <class name="profile.TestUserProfile"/>
+<class name="bookstore.TestBookStore"/>
 </classes>
 </test>
 <!--test name="Other">
