@@ -54,14 +54,10 @@ public class TestBookStore {
   
   @Test (enabled = false)
   public void testAllLinks() throws IOException {
-	  //WebElement table = driver.findElement(By.className("rt-table"));
-	  //List<WebElement> a = driver.findElements(By.xpath("//div[@class='rt-tr-group']/div/div[2]/div/span/a"));
-	  //Iterator<WebElement> loop = a.iterator();
 	  int total = driver.findElements(By.xpath("//div[@class='rt-tr-group']/div/div[2]/div/span/a")).size();
 	  int count = 0;
 	  WebElement link;
 	  while (count < total) {
-		  //link = loop.next();
 		  link = driver.findElements(By.xpath("//div[@class='rt-tr-group']/div/div[2]/div/span/a")).get(count);
 		  String url = link.getAttribute("href");
 		  String title = link.getText();
@@ -115,7 +111,6 @@ public class TestBookStore {
   public void testTableHeading() throws InterruptedException {
 	  Actions actions = new Actions(driver);
 	  List<WebElement> tHeader = driver.findElements(By.xpath("//div[@class='rt-resizable-header-content']"));
-	  //Iterator<WebElement> tHeaderIterator = tHeader.iterator();
 	  Assert.assertTrue(tHeader.size() == 4, "No of column heading mismatch");
 	  String[] titles = {"Image", "Title", "Author", "Publisher"};
 	  int count = 0;
@@ -124,21 +119,26 @@ public class TestBookStore {
 		  actual = titles[count];
 		  Assert.assertEquals(actual, expected, "Title of table mismatch");
 		  actions.moveToElement(tHeader.get(count)).perform();
-		  Thread.sleep(1000);
 		  actual = tHeader.get(count).getCssValue("cursor");
 		  expected = "pointer";
 		  Assert.assertEquals(actual, expected, "Cursor type on hover over table title mismatch");
 		  ++count;
 	  }
-	  
-	  
-	  
-	  
-	  
-	  
   }
   
-  
+  @Test
+  public void testImgSrc() {
+	  List<WebElement> imgs = driver.findElements(By.xpath("//div[@class='rt-tr-group']/div/div[1]/img"));
+	  Iterator<WebElement> imgIterator = imgs.iterator();
+	  Assert.assertEquals(imgs.size(), 8, "Mismatch in number of images in table");
+	  WebElement img;
+	  while (imgIterator.hasNext()) {
+		  img = imgIterator.next();
+		  String imgSrc = img.getAttribute("src");
+		  
+		  Assert.assertFalse(imgSrc.isEmpty(), "Image source cant be empty");
+	  }
+  }
   @AfterTest
   public void afterTest() {
 	  driver.quit();
