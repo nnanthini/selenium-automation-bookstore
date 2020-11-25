@@ -16,7 +16,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.annotations.AfterTest;
@@ -52,14 +54,17 @@ public class TestBookStore {
   
   @Test
   public void testAllLinks() throws IOException {
-	  WebElement table = driver.findElement(By.className("rt-table"));
-	  List<WebElement> a = driver.findElements(By.xpath("//div[@class='rt-tr-group']/div/div[2]/div/span/a"));
-	  Iterator<WebElement> loop = a.iterator();
-	  
+	  //WebElement table = driver.findElement(By.className("rt-table"));
+	  //List<WebElement> a = driver.findElements(By.xpath("//div[@class='rt-tr-group']/div/div[2]/div/span/a"));
+	  //Iterator<WebElement> loop = a.iterator();
+	  int total = driver.findElements(By.xpath("//div[@class='rt-tr-group']/div/div[2]/div/span/a")).size();
+	  int count = 0;
 	  WebElement link;
-	  while (loop.hasNext()) {
-		  link = loop.next();
+	  while (count < total) {
+		  //link = loop.next();
+		  link = driver.findElements(By.xpath("//div[@class='rt-tr-group']/div/div[2]/div/span/a")).get(count);
 		  String url = link.getAttribute("href");
+		  String title = link.getText();
 		  Reporter.log("Link is "+url);
 		  Assert.assertFalse(url.isEmpty(), "Link URL should not be empty");
 		  
@@ -69,8 +74,15 @@ public class TestBookStore {
 			  expected = "OK";
 			  Assert.assertEquals(actual, expected, "Link is invalid");
 			  
+			  if (actual.equals(expected)) {
+				  try {
+					testClickLink(url, title);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			  }
 		  }
-		  
+		  ++count;
 	  }
   }
   
@@ -85,10 +97,19 @@ public class TestBookStore {
 	  }
 	  catch (Exception e) {
 		  return e.toString();
-	  }
-	  
+	  }	  
 	  
   }
+  
+  public void testClickLink(String url, String title) throws InterruptedException {
+	  driver.navigate().to(url);
+	  WebElement titleText = driver.findElement(By.xpath("//div[@id='title-wrapper']/div[2]/label"));
+	  
+	  actual = titleText.getText();
+	  expected = title;
+	  Assert.assertEquals(actual, expected, "Navigation to wrong link");
+	  driver.navigate().back();
+}
   
   
   @AfterTest
