@@ -52,7 +52,7 @@ public class TestBookStore {
 	  Assert.assertEquals(actual, expected, "Title mismatch"); 
   }
   
-  @Test
+  @Test (enabled = false)
   public void testAllLinks() throws IOException {
 	  //WebElement table = driver.findElement(By.className("rt-table"));
 	  //List<WebElement> a = driver.findElements(By.xpath("//div[@class='rt-tr-group']/div/div[2]/div/span/a"));
@@ -110,6 +110,33 @@ public class TestBookStore {
 	  Assert.assertEquals(actual, expected, "Navigation to wrong link");
 	  driver.navigate().back();
 }
+  
+  @Test
+  public void testTableHeading() throws InterruptedException {
+	  Actions actions = new Actions(driver);
+	  List<WebElement> tHeader = driver.findElements(By.xpath("//div[@class='rt-resizable-header-content']"));
+	  //Iterator<WebElement> tHeaderIterator = tHeader.iterator();
+	  Assert.assertTrue(tHeader.size() == 4, "No of column heading mismatch");
+	  String[] titles = {"Image", "Title", "Author", "Publisher"};
+	  int count = 0;
+	  while (count < tHeader.size()) {
+		  expected = tHeader.get(count).getText();
+		  actual = titles[count];
+		  Assert.assertEquals(actual, expected, "Title of table mismatch");
+		  actions.moveToElement(tHeader.get(count)).perform();
+		  Thread.sleep(1000);
+		  actual = tHeader.get(count).getCssValue("cursor");
+		  expected = "pointer";
+		  Assert.assertEquals(actual, expected, "Cursor type on hover over table title mismatch");
+		  ++count;
+	  }
+	  
+	  
+	  
+	  
+	  
+	  
+  }
   
   
   @AfterTest
