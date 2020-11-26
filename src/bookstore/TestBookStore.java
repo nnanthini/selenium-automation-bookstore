@@ -141,7 +141,7 @@ public class TestBookStore {
   }
   
   @Test
-  public void testSort() {
+  public void testPublisherCount() {
 	  List<WebElement> publisherList = driver.findElements(By.xpath("//div[@class='rt-tr-group']/div/div[4]"));
 	  Iterator<WebElement> publishersIterator = publisherList.iterator();
 	  int count = 0;
@@ -150,13 +150,27 @@ public class TestBookStore {
 		  publisher = publishersIterator.next();
 		  
 		  if(!publisher.getText().isEmpty() && !publisher.getText().equals(null) && !publisher.getText().equals(" ")) {
-			  System.out.println("Publisher "+ publisher.getText());
+			  //System.out.println("Publisher "+ publisher.getText());
 			  ++count;
 		  }
 	  }
-	  Reporter.log("Count is for publisher "+count, true);
+	  Reporter.log("Count is for publisher "+count);
 	  Assert.assertTrue(count == 8, "Publisher list mismatch");
 	  
+  }
+  
+  @Test
+  public void testRowChange() {
+	  WebElement select = driver.findElement(By.tagName("select"));
+	  Select s = new Select(select);  
+	  int rowCount;
+	  int totalOptions = s.getOptions().size();	  
+	  for (int i = 0; i < totalOptions; i++) {
+		  s.selectByIndex(i);
+		  rowCount = driver.findElements(By.xpath("//div[@class='rt-tr-group']")).size();		  
+		  Assert.assertTrue(rowCount == Integer.parseInt(s.getFirstSelectedOption().getAttribute("value")), "Mismatch in no of rows in table");
+	  }  
+  
   }
   
   @AfterTest
