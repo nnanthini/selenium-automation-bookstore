@@ -139,6 +139,26 @@ public class TestBookStore {
 		  Assert.assertFalse(imgSrc.isEmpty(), "Image source cant be empty");
 	  }
   }
+  
+  @Test
+  public void testSort() {
+	  List<WebElement> publisherList = driver.findElements(By.xpath("//div[@class='rt-tr-group']/div/div[4]"));
+	  Iterator<WebElement> publishersIterator = publisherList.iterator();
+	  int count = 0;
+	  WebElement publisher = null;
+	  while (publishersIterator.hasNext()) {
+		  publisher = publishersIterator.next();
+		  
+		  if(!publisher.getText().isEmpty() && !publisher.getText().equals(null) && !publisher.getText().equals(" ")) {
+			  System.out.println("Publisher "+ publisher.getText());
+			  ++count;
+		  }
+	  }
+	  Reporter.log("Count is for publisher "+count, true);
+	  Assert.assertTrue(count == 8, "Publisher list mismatch");
+	  
+  }
+  
   @AfterTest
   public void afterTest() {
 	  driver.quit();
